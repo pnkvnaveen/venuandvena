@@ -14,7 +14,8 @@ runs the build itself). Nothing is deployed from a laptop or a cloud session.
   loads anything from another address, and the Worker sends a strict Content-Security-Policy.
 - YouTube plays only after a tap, in the youtube-nocookie.com player. Thumbnails come from our own
   address (`/thumb/<id>`), so the browser contacts Google only when someone presses play.
-- Fast on phones, 48 px touch targets, dark mode, WCAG AA contrast, keyboard friendly.
+- Fast on phones, 48 px touch targets, WCAG AA contrast, keyboard friendly.
+- Light look only, on purpose: the Paper Garden colours stay the same whatever the phone is set to (Naveen, 25 Nov 2026).
 
 ## Layout
 
