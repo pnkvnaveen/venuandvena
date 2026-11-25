@@ -328,3 +328,31 @@ p { margin: 0 0 0.8em; }
 .ticks { padding-left: 1.3em; }
 .ticks li { margin-bottom: 0.5em; padding-left: 0.2em; }
 .ticks li::marker { color: var(--venu); font-size: 1.2em; }
+
+/* ---------------------------------------------------------------- apps and Echo Pals */
+
+.app-list { list-style: none; padding: 0; margin: 8px 0 20px; display: grid; gap: 16px; }
+.app-list h2 { margin-bottom: 0.2em; }
+.app-hero { display: grid; gap: 4px; align-items: center; }
+.app-hero img { width: min(62vw, 260px); justify-self: center; margin-bottom: -40px; position: relative; z-index: 1; filter: drop-shadow(0 8px 10px rgba(40, 60, 30, 0.2)); }
+@media (min-width: 760px) { .app-hero { grid-template-columns: 1fr 300px; } .app-hero img { width: 300px; } }
+.page-head .eyebrow a { color: inherit; }
+.feature-grid { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 160px), 1fr)); }
+.feature-grid li { padding: 14px 16px 6px; }
+.feature-grid h3 { font-size: 1.25rem; margin-bottom: 0.2em; color: var(--venu-ink); }
+.pet-row { display: flex; justify-content: center; gap: 4%; margin-top: 18px; }
+.pet-row img { width: min(28%, 180px); filter: drop-shadow(0 6px 8px rgba(40, 60, 30, 0.18)); }
+.note { background: var(--card); border-left: 6px solid var(--sun); border-radius: 8px; padding: 12px 14px; }
+.steps li { margin-bottom: 0.5em; padding-left: 0.2em; }
+.steps li::marker { font: 700 1.05em "Baloo 2", system-ui, sans-serif; color: var(--venu-ink); }
+.contact-card { margin: 8px 0 8px; }
+.faq { background: var(--card); border: 3px solid var(--rim); border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 12px; }
+.faq summary {
+  cursor: pointer; min-height: var(--tap); padding: 12px 44px 12px 16px; position: relative; list-style: none;
+  font: 700 1.08rem/1.3 "Baloo 2", system-ui, sans-serif;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; position: absolute; right: 16px; top: 50%; transform: translateY(-50%); font-size: 1.5rem; color: var(--vena-ink); }
+.faq[open] summary::after { content: "\2212"; }
+.faq p { padding: 0 16px 6px; }
+.page-head .eyebrow a { display: inline-flex; align-items: center; min-height: 44px; }
