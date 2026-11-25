@@ -1,10 +1,13 @@
 // The Venu & Vena website's Worker. The pages are static files in dist/ (built from site/);
 // this script only handles what a static file cannot:
-//   /             keeps the "newest video" card current from the channel's public feed
-//   /thumb/<id>   serves a YouTube thumbnail from our own address, so a visitor's browser
-//                 never contacts Google until they tap play
+//   / and /videos  add episodes and Shorts that went public after the last build, read from
+//                  the channel's public feed, so a daily upload shows up without a new build
+//   /thumb/<id>    serves a YouTube thumbnail from our own address, so a visitor's browser
+//                  never contacts Google until they tap play
 // Every response gets the same strict security headers: the browser may load files only
 // from this site, plus the youtube-nocookie.com player after a tap.
+
+import { count, episodeCard, shortCard } from './cards.js';
 
 const CHANNEL = 'UCk5NIPTjIx66AJ1riKgn8qQ';
 const FEED = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL}`;
@@ -49,8 +52,8 @@ export default {
     if (url.pathname.startsWith('/thumb/')) return secure(await thumbnail(url, ctx));
     if (url.pathname.startsWith('/api/')) return secure(new Response('Not found', { status: 404 }));
     const page = await env.ASSETS.fetch(request);
-    if (url.pathname === '/' && page.ok && request.method === 'GET') {
-      return secure(await withNewest(page));
+    if ((url.pathname === '/' || url.pathname === '/videos') && page.ok && request.method === 'GET') {
+      return secure(await withLatest(page, env, request));
     }
     return secure(page);
   },
@@ -59,7 +62,12 @@ export default {
 // ---------------------------------------------------------------- thumbnails
 
 // m 320x180, h 640x480 (16:9 picture with bars, cropped on the page), l 1280x720, s tall (Shorts).
-const SIZES = { m: ['mqdefault.jpg'], h: ['sddefault.jpg', 'hqdefault.jpg'], l: ['hq720.jpg', 'hqdefault.jpg'], s: ['oardefault.jpg', 'hqdefault.jpg'] };
+const SIZES = {
+  m: ['mqdefault.jpg'],
+  h: ['sddefault.jpg', 'hqdefault.jpg'],
+  l: ['hq720.jpg', 'hqdefault.jpg'],
+  s: ['oardefault.jpg', 'hqdefault.jpg'],
+};
 
 async function thumbnail(url, ctx) {
   const [, , id, size = 'm'] = url.pathname.split('/');
@@ -80,22 +88,7 @@ async function thumbnail(url, ctx) {
   return new Response('Not found', { status: 404 });
 }
 
-// ---------------------------------------------------------------- newest video
-
-// The newest public episode in the channel's feed (Shorts and the trailer left out), or null.
-export function newestFromFeed(xml) {
-  for (const entry of xml.split('<entry>').slice(1)) {
-    const id = (entry.match(/<yt:videoId>([^<]+)<\/yt:videoId>/) || [])[1];
-    const raw = (entry.match(/<title>([^<]*)<\/title>/) || [])[1] || '';
-    const published = (entry.match(/<published>([^<]+)<\/published>/) || [])[1] || '';
-    const title = decode(raw);
-    if (!id || !VIDEO_ID.test(id) || /#shorts/i.test(title) || !title.includes(' | ')) continue;
-    const parts = title.split(' | ');
-    const series = (parts.find((p) => p.endsWith(' with Venu & Vena')) || '').replace(' with Venu & Vena', '');
-    return { id, title: parts[0].trim(), series, published: published.slice(0, 10) };
-  }
-  return null;
-}
+// ---------------------------------------------------------------- the channel feed
 
 function decode(s) {
   return s
@@ -106,23 +99,76 @@ function decode(s) {
     .replace(/&amp;/g, '&');
 }
 
-async function withNewest(page) {
-  let newest = null;
-  try {
-    const feed = await fetch(FEED, { cf: { cacheTtl: 1800, cacheEverything: true } });
-    if (feed.ok) newest = newestFromFeed(await feed.text());
-  } catch {
-    newest = null;
+// The feed's videos, newest first: {id, title, published, short, series} where series is the
+// series name from the title ("... | Animal Friends with Venu & Vena | Episode 6").
+export function parseFeed(xml) {
+  const out = [];
+  for (const entry of xml.split('<entry>').slice(1)) {
+    const id = (entry.match(/<yt:videoId>([^<]+)<\/yt:videoId>/) || [])[1];
+    const full = decode((entry.match(/<title>([^<]*)<\/title>/) || [])[1] || '');
+    const published = ((entry.match(/<published>([^<]+)<\/published>/) || [])[1] || '').slice(0, 10);
+    if (!id || !VIDEO_ID.test(id)) continue;
+    const short = /#shorts/i.test(full);
+    const parts = full.replace(/\s*#shorts\b/i, '').split(' | ');
+    const series = (parts.find((p) => p.endsWith(' with Venu & Vena')) || '').replace(' with Venu & Vena', '');
+    out.push({ id, title: parts[0].trim(), published, short, series });
   }
-  if (!newest) return page;
+  return out;
+}
+
+// The newest public episode in the feed (Shorts and the trailer left out), or null.
+export function newestFromFeed(xml) {
+  const v = parseFeed(xml).find((e) => !e.short && e.series);
+  return v ? { id: v.id, title: v.title, series: v.series, published: v.published } : null;
+}
+
+// What the feed has that the built catalogue does not: new episodes per series slug, new Shorts.
+export function additions(entries, catalogue) {
+  const known = new Set();
+  for (const s of catalogue.series) for (const e of s.episodes) known.add(e.id);
+  for (const e of catalogue.shorts) known.add(e.id);
+  for (const k of ['full_show', 'trailer']) if (catalogue[k]) known.add(catalogue[k].id);
+  const slugOf = Object.fromEntries(catalogue.series.map((s) => [s.name, s.slug]));
+  const series = {};
+  const shorts = [];
+  for (const e of [...entries].reverse()) {  // oldest first, so new episodes keep playlist order
+    if (known.has(e.id)) continue;
+    if (e.short) shorts.unshift(e);
+    else if (slugOf[e.series]) (series[slugOf[e.series]] ||= []).push({ ...e, slug: slugOf[e.series] });
+  }
+  return { series, shorts };
+}
+
+async function latest(env, request) {
+  try {
+    const [feed, data] = await Promise.all([
+      // FEED_URL is only for local testing (.dev.vars); the live site always reads YouTube.
+      fetch(env.FEED_URL || FEED, { cf: { cacheTtl: 1800, cacheEverything: true } }),
+      env.ASSETS.fetch(new Request(new URL('/data/videos.json', request.url))),
+    ]);
+    if (!feed.ok || !data.ok) return null;
+    const entries = parseFeed(await feed.text());
+    const catalogue = await data.json();
+    return { entries, catalogue, added: additions(entries, catalogue) };
+  } catch {
+    return null;
+  }
+}
+
+async function withLatest(page, env, request) {
+  const live = await latest(env, request);
+  if (!live) return page;
+  const { catalogue, added } = live;
+  const newest = live.entries.find((e) => !e.short && e.series);
+  const counts = Object.fromEntries(
+    catalogue.series.map((s) => [s.slug, s.episodes.length + (added.series[s.slug] || []).length]),
+  );
   let stale = false;
   return new HTMLRewriter()
+    // Home: the newest-episode card, only when the feed has something newer than the build.
     .on('[data-newest]', {
       element(el) {
-        // Only replace the built-in card when the feed has something newer.
-        const builtId = el.getAttribute('data-newest');
-        const builtDate = el.getAttribute('data-published') || '';
-        stale = builtId !== newest.id && newest.published >= builtDate;
+        stale = !!newest && el.getAttribute('data-newest') !== newest.id && newest.published >= (el.getAttribute('data-published') || '');
         if (stale) el.setAttribute('data-newest', newest.id);
       },
     })
@@ -148,8 +194,32 @@ async function withNewest(page) {
     })
     .on('[data-newest] [data-newest-series]', {
       element(el) {
-        if (stale && newest.series) el.setInnerContent(newest.series);
+        if (stale) el.setInnerContent(newest.series);
+      },
+    })
+    // Home tiles and Videos headings: episode counts.
+    .on('[data-count]', {
+      element(el) {
+        const slug = el.getAttribute('data-count');
+        if (slug in counts && (added.series[slug] || []).length) el.setInnerContent(count(counts[slug]));
+      },
+    })
+    // Videos: new cards at the end of their series row, new Shorts at the front.
+    .on('[data-row]', {
+      element(el) {
+        const slug = el.getAttribute('data-row');
+        if (slug === 'shorts') {
+          if (added.shorts.length) el.prepend(added.shorts.map(shortCard).join('\n'), { html: true });
+        } else if ((added.series[slug] || []).length) {
+          el.append(added.series[slug].map(episodeCard).join('\n'), { html: true });
+        }
+      },
+    })
+    .on('[data-empty]', {
+      element(el) {
+        if ((added.series[el.getAttribute('data-empty')] || []).length) el.remove();
       },
     })
     .transform(page);
 }
+

@@ -12,15 +12,12 @@ import { createHash } from 'node:crypto';
 import { cpSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { CHANNEL_URL, count, episodeCard, esc, minutes, player, playlistUrl, shortCard } from '../src/cards.js';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SITE = join(ROOT, 'site');
 const OUT = join(ROOT, 'dist');
 const videos = JSON.parse(readFileSync(join(SITE, 'data', 'videos.json'), 'utf8'));
-const CHANNEL_URL = 'https://www.youtube.com/@venuandvena';
-
-export const esc = (s) =>
-  String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
 // ---------------------------------------------------------------- series look
 
@@ -47,21 +44,6 @@ const SERIES_LOOK = {
   'abc-words': { color: 'vena', glyph: '<span class="glyph glyph-sm">abc</span>' },
 };
 
-const playlistUrl = (id) => `https://www.youtube.com/playlist?list=${id}`;
-const watchUrl = (id) => `https://www.youtube.com/watch?v=${id}`;
-
-// A video that plays on the page after a tap. Without JavaScript it is a plain link to YouTube.
-function player(v, { size = 'm', label = v.title, lazy = true } = {}) {
-  return `<div class="player">
-  <a class="player-link" href="${watchUrl(v.id)}" data-yt="${esc(v.id)}" aria-label="Play ${esc(label)}">
-    <img src="/thumb/${esc(v.id)}/${size}"${
-      size === 'l' ? ` srcset="/thumb/${esc(v.id)}/m 320w, /thumb/${esc(v.id)}/h 640w, /thumb/${esc(v.id)}/l 1280w" sizes="(min-width: 900px) 620px, calc(100vw - 52px)"` : ''
-    } alt="" width="${size === 'l' ? 1280 : 320}" height="${size === 'l' ? 720 : 180}"${lazy ? ' loading="lazy"' : ''} decoding="async">
-    <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z"/></svg></span>
-  </a>
-</div>`;
-}
-
 const BLOCKS = {
   newest() {
     const v = videos.newest;
@@ -80,12 +62,10 @@ const BLOCKS = {
 ${videos.series
   .map((s) => {
     const look = SERIES_LOOK[s.slug] || { color: 'paper', glyph: '' };
-    const n = s.episodes.length;
-    const count = n ? `${n} episode${n === 1 ? '' : 's'}` : 'Coming soon';
     return `  <li><a class="tile tile-${look.color}" href="/videos#${s.slug}">
     <span class="tile-art" aria-hidden="true">${look.glyph}</span>
     <span class="tile-name">${esc(s.name)}</span>
-    <span class="tile-count">${count}</span>
+    <span class="tile-count" data-count="${esc(s.slug)}">${count(s.episodes.length)}</span>
   </a></li>`;
   })
   .join('\n')}${
@@ -94,13 +74,61 @@ ${videos.series
   <li><a class="tile tile-paper" href="/videos#full-show">
     <span class="tile-art" aria-hidden="true"><span class="glyph glyph-sm ink">A to Z</span></span>
     <span class="tile-name">The full A to Z show</span>
-    <span class="tile-count">${videos.full_show.minutes} minutes</span>
+    <span class="tile-count">${minutes(videos.full_show.minutes)}</span>
   </a></li>`
     : ''
 }
 </ul>`;
   },
   'channel-url': () => CHANNEL_URL,
+  'series-chips'() {
+    const chips = videos.series.map((s) => `<a href="#${esc(s.slug)}">${esc(s.name)}</a>`);
+    if (videos.full_show) chips.push('<a href="#full-show">A to Z show</a>');
+    chips.push('<a href="#shorts">Shorts</a>');
+    return `<nav class="chips" aria-label="Series">${chips.join('')}</nav>`;
+  },
+  'series-rows'() {
+    return videos.series
+      .map((s) => {
+        const look = SERIES_LOOK[s.slug] || { color: 'paper' };
+        return `<section class="series" id="${esc(s.slug)}" aria-labelledby="h-${esc(s.slug)}">
+  <div class="series-head">
+    <span class="series-badge tile-${look.color}" aria-hidden="true"></span>
+    <div>
+      <h2 id="h-${esc(s.slug)}">${esc(s.name)}</h2>
+      <p class="series-blurb">${esc(s.blurb)} <span class="series-count" data-count="${esc(s.slug)}">${count(s.episodes.length)}</span></p>
+    </div>
+  </div>
+  <ul class="row" role="list" data-row="${esc(s.slug)}">
+${s.episodes.map(episodeCard).join('\n')}
+  </ul>${s.episodes.length ? '' : `\n  <p class="row-empty" data-empty="${esc(s.slug)}">New episodes are on their way. Follow the channel to see them first.</p>`}
+  <p class="more"><a href="${playlistUrl(s.playlist)}">Open ${esc(s.name)} on YouTube</a></p>
+</section>`;
+      })
+      .join('\n');
+  },
+  'full-show'() {
+    const v = videos.full_show;
+    if (!v) return '';
+    return `<section class="series" id="full-show" aria-labelledby="h-full-show">
+  <h2 id="h-full-show">The full A to Z show</h2>
+  <p class="series-blurb">All 26 letters in one show, ${minutes(v.minutes)} long. Good for a quiet afternoon together.</p>
+  <article class="newest card">
+    ${player(v, { size: 'l', label: 'the full A to Z show' })}
+    <div class="newest-text"><h3>${esc(v.title)}</h3></div>
+  </article>
+</section>`;
+  },
+  shorts() {
+    return `<section class="series" id="shorts" aria-labelledby="h-shorts">
+  <h2 id="h-shorts">Shorts</h2>
+  <p class="series-blurb">One-minute moments from the episodes, made for phones.</p>
+  <ul class="row row-tall" role="list" data-row="shorts">
+${videos.shorts.map(shortCard).join('\n')}
+  </ul>
+  <p class="more"><a href="${CHANNEL_URL}/shorts">All Shorts on YouTube</a></p>
+</section>`;
+  },
 };
 
 // ---------------------------------------------------------------- pages
@@ -141,6 +169,8 @@ export function build() {
   mkdirSync(OUT, { recursive: true });
   for (const d of ['css', 'js', 'img', 'fonts', 'studio']) cpSync(join(SITE, d), join(OUT, d), { recursive: true });
   for (const f of ['_headers', 'robots.txt']) cpSync(join(SITE, f), join(OUT, f));
+  mkdirSync(join(OUT, 'data'), { recursive: true });
+  cpSync(join(SITE, 'data', 'videos.json'), join(OUT, 'data', 'videos.json'));
   cpSync(join(SITE, 'img', 'favicon.png'), join(OUT, 'favicon.png'));
 
   const layout = readFileSync(join(SITE, 'layout.html'), 'utf8');

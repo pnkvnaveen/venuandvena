@@ -27,7 +27,8 @@ runs the build itself). Nothing is deployed from a laptop or a cloud session.
 | `site/pages/studio/` | The Venu & Vena Studio app's home and privacy pages (the Google sign-in app), served at `/studio`. The old copies at the repo root stay for GitHub Pages until the app's consent screen points here. |
 | `scripts/build.mjs` | Builds `dist/` from `site/`. No dependencies. |
 | `scripts/check.mjs` | The checks above, plus a test of the newest-video logic. |
-| `src/worker.js` | Keeps the Home page's newest episode current from the channel's public feed, serves thumbnails, redirects www, sets security headers. |
+| `src/worker.js` | Adds episodes and Shorts that went public after the last build to Home and Videos, read from the channel's public feed (the last 15 uploads, so run `tools/sync_videos.py` at least weekly); serves thumbnails; redirects www; sets security headers. Test it locally by putting `FEED_URL="http://127.0.0.1:8788/feed.xml"` in `.dev.vars`. |
+| `src/cards.js` | The video card HTML, shared by the build and the Worker. |
 | `tools/make_art.py` | Makes the pictures from the channel's own art (run from a `venu-vena-studio` checkout). |
 | `tools/sync_videos.py` | Refreshes `videos.json` from the YouTube API (read-only). |
 
