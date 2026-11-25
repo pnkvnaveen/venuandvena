@@ -2,7 +2,8 @@
 //  1. no page loads anything from another site (scripts, styles, images, fonts, frames);
 //     plain links out (<a href>) are fine
 //  2. every page has a title, a description and one <h1>
-//  3. the Worker picks the newest episode from the channel feed correctly
+//  3. the pages the Echo Pals app opens link only to each other and to email (Kids Category)
+//  4. the Worker picks the newest episode from the channel feed correctly
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import assert from 'node:assert/strict';
@@ -35,6 +36,21 @@ for (const file of walk(DIST)) {
     }
     if (/@import/.test(css)) fail(`${file}: @import`);
   }
+}
+
+// The Echo Pals app opens these pages behind its grown-up gate. Apple's Kids Category rules
+// want no way from there to other sites (YouTube, Instagram, a shop) or the rest of this site.
+const APP_PAGES = ['/echopals/privacy', '/echopals/support'];
+for (const path of APP_PAGES) {
+  const html = readFileSync(join(DIST, `${path.slice(1)}.html`), 'utf8');
+  if (!/class="logo"/.test(html) || /<a class="logo"/.test(html)) fail(`${path}: needs "chrome: app" (no site menu or links out)`);
+  for (const m of html.matchAll(/<a\b[^>]*\bhref="([^"]*)"/gi)) {
+    const href = m[1];
+    if (!(href.startsWith('mailto:') || href.startsWith('#') || APP_PAGES.includes(href.replace(/#.*$/, '')))) {
+      fail(`${path}: links to ${href}; the app's pages may link only to each other and to email`);
+    }
+  }
+  if (/echopals\.venuandvena\.com|workers\.dev/i.test(html)) fail(`${path}: mentions the web app's address`);
 }
 
 // The sitemap lists every page Google should index, and no page that says noindex.
