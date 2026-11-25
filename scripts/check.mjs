@@ -6,7 +6,7 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import assert from 'node:assert/strict';
-import { additions, newestFromFeed, parseFeed } from '../src/worker.js';
+import { additions, newestFromFeed, parseFeed, readAnswers } from '../src/worker.js';
 
 const DIST = new URL('../dist/', import.meta.url).pathname;
 const walk = (d) => readdirSync(d).flatMap((f) => (statSync(join(d, f)).isDirectory() ? walk(join(d, f)) : [join(d, f)]));
@@ -49,6 +49,23 @@ assert.deepEqual(added.series['animal-friends'].map((e) => e.id), ['4tEcUF1olMw'
 assert.deepEqual(added.shorts.map((e) => e.id), ['AAAAAAAAAAA']);
 catalogue.series[0].episodes.push({ id: '4tEcUF1olMw' });
 assert.equal(additions(parseFeed(feed), catalogue).series['animal-friends'], undefined);
+
+// Feedback: only known choices are kept, text is capped, an empty form keeps nothing.
+const form = (pairs) => {
+  const f = new FormData();
+  for (const [k, v] of pairs) f.append(k, v);
+  return f;
+};
+assert.equal(readAnswers(form([])), null);
+assert.equal(readAnswers(form([['email', 'a@b.co'], ['age', 'seven']])), null);
+const row = readAnswers(form([['age', '4'], ['series', 'Shapes'], ['series', 'Hacked'], ['series', 'Colours'],
+  ['enjoy', '9'], ['liked', 'x'.repeat(3000)], ['email', 'not an email']]));
+assert.equal(row.age, '4');
+assert.equal(row.series, 'Shapes, Colours');
+assert.equal(row.enjoy, null);
+assert.equal(row.liked.length, 2000);
+assert.equal(row.email, null);
+assert.equal(readAnswers(form([['next', ' Dinosaurs! '], ['email', 'mum@example.com']])).email, 'mum@example.com');
 
 if (problems) process.exit(1);
 console.log('check passed');

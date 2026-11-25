@@ -1,0 +1,107 @@
+<!--
+title: Feedback
+description: Tell Venu & Vena what your child enjoys, what puzzled them and what we should make next. Every question is optional, and we keep only what you type.
+nav: feedback
+-->
+<div class="page-head">
+  <div class="wrap">
+    <h1>A quick note from parents</h1>
+    <p class="page-lead">Tell us what your child enjoys, what puzzled them, and what we should make next. Every question is optional.</p>
+  </div>
+</div>
+<div class="wrap narrow">
+  <form class="feedback card" method="post" action="/api/feedback">
+    <fieldset>
+      <legend>How old is your child?</legend>
+      <div class="choices">
+        <label><input type="radio" name="age" value="under 3"> Under 3</label>
+        <label><input type="radio" name="age" value="3"> 3</label>
+        <label><input type="radio" name="age" value="4"> 4</label>
+        <label><input type="radio" name="age" value="5"> 5</label>
+        <label><input type="radio" name="age" value="over 5"> Over 5</label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Which series does your child enjoy?</legend>
+      <div class="choices">
+        <label><input type="checkbox" name="series" value="Alphabet"> Alphabet</label>
+        <label><input type="checkbox" name="series" value="Numbers"> Numbers</label>
+        <label><input type="checkbox" name="series" value="Number Games"> Number Games</label>
+        <label><input type="checkbox" name="series" value="Colours"> Colours</label>
+        <label><input type="checkbox" name="series" value="Shapes"> Shapes</label>
+        <label><input type="checkbox" name="series" value="Animal Friends"> Animal Friends</label>
+        <label><input type="checkbox" name="series" value="ABC Words"> ABC Words</label>
+        <label><input type="checkbox" name="series" value="A to Z show"> The A to Z show</label>
+        <label><input type="checkbox" name="series" value="Shorts"> Shorts</label>
+        <label><input type="checkbox" name="series" value="Echo Pals"> Echo Pals app</label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>How much does your child enjoy the videos?</legend>
+      <div class="choices scale">
+        <label><input type="radio" name="enjoy" value="1"> 1 <span>Not much</span></label>
+        <label><input type="radio" name="enjoy" value="2"> 2</label>
+        <label><input type="radio" name="enjoy" value="3"> 3</label>
+        <label><input type="radio" name="enjoy" value="4"> 4</label>
+        <label><input type="radio" name="enjoy" value="5"> 5 <span>Loves them</span></label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Did your child learn something new?</legend>
+      <div class="choices">
+        <label><input type="radio" name="learned" value="yes"> Yes</label>
+        <label><input type="radio" name="learned" value="a little"> A little</label>
+        <label><input type="radio" name="learned" value="not yet"> Not yet</label>
+        <label><input type="radio" name="learned" value="not sure"> Not sure</label>
+      </div>
+    </fieldset>
+
+    <label class="field" for="f-liked">What did your child enjoy most?</label>
+    <textarea id="f-liked" name="liked" rows="3" maxlength="2000"></textarea>
+
+    <label class="field" for="f-confusing">Was anything confusing, too fast or not quite right?</label>
+    <textarea id="f-confusing" name="confusing" rows="3" maxlength="2000"></textarea>
+
+    <label class="field" for="f-next">What should we make next?</label>
+    <textarea id="f-next" name="next" rows="3" maxlength="2000"></textarea>
+
+    <fieldset>
+      <legend>How did you find us?</legend>
+      <div class="choices">
+        <label><input type="radio" name="found" value="youtube search"> Searching on YouTube</label>
+        <label><input type="radio" name="found" value="youtube suggested"> Suggested by YouTube</label>
+        <label><input type="radio" name="found" value="instagram"> Instagram</label>
+        <label><input type="radio" name="found" value="friend or family"> A friend or family</label>
+        <label><input type="radio" name="found" value="other"> Somewhere else</label>
+      </div>
+    </fieldset>
+
+    <label class="field" for="f-other">Anything else you'd like to tell us?</label>
+    <textarea id="f-other" name="other" rows="3" maxlength="2000"></textarea>
+
+    <label class="field" for="f-email">Your email, only if you'd like a reply</label>
+    <input id="f-email" name="email" type="email" autocomplete="email" maxlength="200" inputmode="email">
+
+    <div class="trap" aria-hidden="true">
+      <label for="f-website">Leave this empty</label>
+      <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
+    </div>
+
+    <p class="form-note" id="empty-note" role="alert" tabindex="-1" hidden>Please answer at least one question first.</p>
+    <button class="button" type="submit">Send to Venu &amp; Vena</button>
+  </form>
+
+  <section class="prose" aria-labelledby="keep-title">
+    <h2 id="keep-title">What we keep</h2>
+    <ul class="ticks">
+      <li>Only the answers you give here and the date. No name, no IP address and no cookies.</li>
+      <li>Your answers are stored on our own Cloudflare account, not with a form company, and only we read them.</li>
+      <li>If you give your email, we use it only to reply to you.</li>
+      <li>We delete every answer after 12 months, and never share or sell it.</li>
+    </ul>
+    <p>Rather write? Email <a href="mailto:venuandvena@gmail.com">venuandvena@gmail.com</a>.</p>
+  </section>
+</div>

@@ -50,12 +50,20 @@ export default {
       return Response.redirect(url.toString(), 301);
     }
     if (url.pathname.startsWith('/thumb/')) return secure(await thumbnail(url, ctx));
+    if (url.pathname === '/api/feedback' && request.method === 'POST') {
+      return secure(await feedback(request, env));
+    }
     if (url.pathname.startsWith('/api/')) return secure(new Response('Not found', { status: 404 }));
     const page = await env.ASSETS.fetch(request);
     if ((url.pathname === '/' || url.pathname === '/videos') && page.ok && request.method === 'GET') {
       return secure(await withLatest(page, env, request));
     }
     return secure(page);
+  },
+
+  // Once a day: answers older than 12 months are deleted, as the feedback page promises.
+  async scheduled(event, env, ctx) {
+    if (env.DB) ctx.waitUntil(forget(env.DB));
   },
 };
 
@@ -223,3 +231,93 @@ async function withLatest(page, env, request) {
     .transform(page);
 }
 
+
+// ---------------------------------------------------------------- feedback
+
+// The feedback form posts here. Answers go into our own D1 database (the DB binding) with the
+// date and nothing else: no name, no IP address, no cookie. The page says the same.
+const CHOICES = {
+  age: ['under 3', '3', '4', '5', 'over 5'],
+  enjoy: ['1', '2', '3', '4', '5'],
+  learned: ['yes', 'a little', 'not yet', 'not sure'],
+  found: ['youtube search', 'youtube suggested', 'instagram', 'friend or family', 'other'],
+};
+const SERIES = ['Alphabet', 'Numbers', 'Number Games', 'Colours', 'Shapes', 'Animal Friends', 'ABC Words',
+  'A to Z show', 'Shorts', 'Echo Pals'];
+const TEXTS = ['liked', 'confusing', 'next', 'other'];
+const MAX_TEXT = 2000;
+const MAX_PER_HOUR = 60;  // all visitors together; a flood is refused, real parents never get near it
+const EMAIL = /^[^\s@]{1,64}@[^\s@]{1,190}\.[^\s@]{2,}$/;
+
+const SCHEMA = `CREATE TABLE IF NOT EXISTS feedback (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  created TEXT NOT NULL,
+  age TEXT, series TEXT, enjoy TEXT, learned TEXT,
+  liked TEXT, confusing TEXT, next TEXT, found TEXT, other TEXT, email TEXT
+)`;
+
+// Turns a posted form into a row, or null when there is nothing to keep.
+export function readAnswers(form) {
+  const one = (k) => {
+    const v = String(form.get(k) || '');
+    return CHOICES[k].includes(v) ? v : null;
+  };
+  const text = (k) => String(form.get(k) || '').replace(/\r\n?/g, '\n').trim().slice(0, MAX_TEXT) || null;
+  const series = form.getAll('series').map(String).filter((v) => SERIES.includes(v));
+  const email = String(form.get('email') || '').trim();
+  const row = {
+    age: one('age'),
+    series: series.length ? [...new Set(series)].join(', ') : null,
+    enjoy: one('enjoy'),
+    learned: one('learned'),
+    liked: text('liked'),
+    confusing: text('confusing'),
+    next: text('next'),
+    found: one('found'),
+    other: text('other'),
+    email: email.length <= 200 && EMAIL.test(email) ? email : null,
+  };
+  const answered = Object.entries(row).some(([k, v]) => k !== 'email' && v);
+  return answered ? row : null;
+}
+
+const goTo = (request, path) => Response.redirect(new URL(path, request.url).toString(), 303);
+
+async function feedback(request, env) {
+  const type = request.headers.get('Content-Type') || '';
+  if (!type.startsWith('application/x-www-form-urlencoded') && !type.startsWith('multipart/form-data')) {
+    return new Response('Bad request', { status: 400 });
+  }
+  if (Number(request.headers.get('Content-Length') || 0) > 64_000) return goTo(request, '/feedback/sorry');
+  let form;
+  try {
+    form = await request.formData();
+  } catch {
+    return goTo(request, '/feedback/sorry');
+  }
+  // The hidden "website" box is for robots only; a person never sees it. Robots get the
+  // thank-you page, so they learn nothing, and nothing is kept.
+  if (String(form.get('website') || '').trim()) return goTo(request, '/feedback/thanks');
+  const row = readAnswers(form);
+  if (!row) return goTo(request, '/feedback/sorry');
+  if (!env.DB) return goTo(request, '/feedback/sorry');
+  try {
+    await env.DB.prepare(SCHEMA).run();
+    const recent = await env.DB.prepare(
+      "SELECT COUNT(*) AS n FROM feedback WHERE created > strftime('%Y-%m-%dT%H:%M:%SZ', 'now', '-1 hour')",
+    ).first('n');
+    if (recent >= MAX_PER_HOUR) return goTo(request, '/feedback/sorry');
+    const cols = Object.keys(row);
+    await env.DB.prepare(
+      `INSERT INTO feedback (created, ${cols.join(', ')}) VALUES (strftime('%Y-%m-%dT%H:%M:%SZ', 'now'), ${cols.map(() => '?').join(', ')})`,
+    ).bind(...cols.map((k) => row[k])).run();
+    return goTo(request, '/feedback/thanks');
+  } catch {
+    return goTo(request, '/feedback/sorry');
+  }
+}
+
+async function forget(db) {
+  await db.prepare(SCHEMA).run();
+  await db.prepare("DELETE FROM feedback WHERE created < strftime('%Y-%m-%dT%H:%M:%SZ', 'now', '-12 months')").run();
+}
