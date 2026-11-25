@@ -9,6 +9,11 @@
 //
 // A page file at pages/about.html is served at /about, pages/echopals/privacy.html at
 // /echopals/privacy. A page whose header says "layout: none" is copied unchanged.
+//
+// A page whose header says "chrome: app" is one the Echo Pals app opens (behind its grown-up
+// gate, in an in-app web sheet). Apple's Kids Category rules want no way out from there, so it
+// gets a header and footer with no site menu, no YouTube or Instagram, only email and the
+// app's own pages. `npm run check` makes sure such a page links nowhere else.
 
 import { createHash } from 'node:crypto';
 import { cpSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
@@ -134,6 +139,42 @@ ${videos.shorts.map(shortCard).join('\n')}
   },
 };
 
+// ---------------------------------------------------------------- header and footer
+
+function siteHeader(m) {
+  const nav = (item, label) => `      <a href="/${item}"${m.nav === item ? ' aria-current="page"' : ''}>${label}</a>`;
+  return `    <a class="logo" href="/"><img src="/img/wordmark.webp" alt="Venu &amp; Vena home" width="820" height="241"></a>
+    <nav class="menu" aria-label="Main">
+${[nav('videos', 'Videos'), nav('apps', 'Apps'), nav('about', 'About'), nav('feedback', 'Feedback')].join('\n')}
+    </nav>`;
+}
+
+const SITE_FOOTER_LINKS = `    <ul class="footer-links" role="list">
+      <li><a href="https://www.youtube.com/@venuandvena">YouTube</a></li>
+      <li><a href="https://www.instagram.com/venuandvena/">Instagram</a></li>
+      <li><a href="mailto:hello@venuandvena.com">Email us</a></li>
+      <li><a href="/feedback">Send feedback</a></li>
+      <li><a href="/privacy">Privacy</a></li>
+    </ul>`;
+
+// The pages the Echo Pals app opens (scripts/check.mjs has the same list): the logo is not a
+// link, and the only links are to each other and to email.
+const APP_PAGES = ['/echopals/privacy', '/echopals/support'];
+
+function appHeader(path) {
+  const nav = (href, label) => `      <a href="${href}"${path === href ? ' aria-current="page"' : ''}>${label}</a>`;
+  return `    <span class="logo"><img src="/img/wordmark.webp" alt="Venu &amp; Vena" width="820" height="241"></span>
+    <nav class="menu" aria-label="Echo Pals">
+${[nav('/echopals/privacy', 'Privacy'), nav('/echopals/support', 'Help')].join('\n')}
+    </nav>`;
+}
+
+const APP_FOOTER_LINKS = `    <ul class="footer-links" role="list">
+      <li><a href="mailto:hello@venuandvena.com">Email us</a></li>
+      <li><a href="/echopals/support">Echo Pals help</a></li>
+      <li><a href="/echopals/privacy">Echo Pals privacy</a></li>
+    </ul>`;
+
 // ---------------------------------------------------------------- pages
 
 function walk(dir) {
@@ -198,9 +239,10 @@ export function build() {
         'js-version': version.js,
         year: String(new Date().getFullYear()),
       };
-      for (const item of ['videos', 'apps', 'about', 'feedback']) {
-        vars[`nav:${item}`] = m.nav === item ? ' aria-current="page"' : '';
-      }
+      const app = m.chrome === 'app';
+      if (app && !APP_PAGES.includes(vars.path)) throw new Error(`${rel}: add ${vars.path} to APP_PAGES`);
+      vars.header = app ? appHeader(vars.path) : siteHeader(m);
+      vars['footer-links'] = app ? APP_FOOTER_LINKS : SITE_FOOTER_LINKS;
       if (m.index !== 'no') listed.push(vars.path);
       vars.content = fill(body, vars);
       html = fill(layout, vars);
