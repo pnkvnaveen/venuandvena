@@ -1,0 +1,11 @@
+:root { --paper: #fbf6ec; --ink: #2d2a26; --orange: #e8833a; --teal: #2a9d8f; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink);
+  font: 18px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 680px; margin: 0 auto; padding: 48px 16px 64px; }
+h1 { font-size: 2rem; margin: 0 0 4px; }
+h1 .venu { color: var(--orange); } h1 .vena { color: var(--teal); }
+h2 { font-size: 1.2rem; margin-top: 2rem; }
+.lead { font-size: 1.1rem; }
+a { color: var(--teal); }
+footer { margin-top: 3rem; font-size: 0.9rem; opacity: 0.8; }

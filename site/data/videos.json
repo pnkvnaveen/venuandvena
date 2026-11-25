@@ -1,0 +1,691 @@
+{
+ "channel": "UCk5NIPTjIx66AJ1riKgn8qQ",
+ "newest": {
+  "id": "4tEcUF1olMw",
+  "title": "Bug Hunt: Garden Bugs for Kids",
+  "published": "2026-11-24",
+  "minutes": 5,
+  "series": "animal-friends"
+ },
+ "series": [
+  {
+   "slug": "alphabet",
+   "name": "Alphabet",
+   "blurb": "Meet every letter from A to Z.",
+   "playlist": "PLYyi0p3BA5HQ",
+   "episodes": [
+    {
+     "id": "KFZKsJpQSfk",
+     "title": "Letter A for Kids: The Stick Tent",
+     "published": "2026-11-06",
+     "minutes": 1,
+     "series": "alphabet"
+    },
+    {
+     "id": "BT4q4QQiTwA",
+     "title": "Letter B for Kids: Two Red Balloons",
+     "published": "2026-11-06",
+     "minutes": 1,
+     "series": "alphabet"
+    },
+    {
+     "id": "MkNagHxxQ6Y",
+     "title": "Letter C for Kids: The Giant Cookie",
+     "published": "2026-11-06",
+     "minutes": 1,
+     "series": "alphabet"
+    },
+    {
+     "id": "Rg47mr2_jQs",
+     "title": "Letter D for Kids: The Little Sailboat",
+     "published": "2026-11-06",
+     "minutes": 1,
+     "series": "alphabet"
+    },
+    {
+     "id": "Ve9U_0GQ6-M",
+     "title": "Letter E for Kids: Where Is Teddy?",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "alphabet"
+    },
+    {
+     "id": "l57rVY_O088",
+     "title": "Letter F for Kids: Two Little Birds",
+     "published": "2026-11-06",
+     "minutes": 1,
+     "series": "alphabet"
+    },
+    {
+     "id": "3bd_SzCqatY",
+     "title": "Letter G for Kids: The Sleepy Caterpillar",
+     "published": "2026-11-06",
+     "minutes": 1,
+     "series": "alphabet"
+    },
+    {
+     "id": "R44UZWO-m8E",
+     "title": "Letter H for Kids: Kite in a Tree",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "alphabet"
+    },
+    {
+     "id": "tp947n3HURE",
+     "title": "Letter I for Kids: The Block Tower",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "alphabet"
+    },
+    {
+     "id": "OQcs5rO-IS4",
+     "title": "Letter J for Kids: The Rainy Day Umbrella",
+     "published": "2026-11-06",
+     "minutes": 1,
+     "series": "alphabet"
+    },
+    {
+     "id": "-vLZq8pGBsw",
+     "title": "Letter K for Kids: The Little Plant",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "alphabet"
+    },
+    {
+     "id": "HzA72kozD-E",
+     "title": "Letter L for Kids: The Rain Boot",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "alphabet"
+    },
+    {
+     "id": "GJt00NLVavY",
+     "title": "Letter M for Kids: Goodnight, Sun",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "alphabet"
+    },
+    {
+     "id": "U2rIR2Zu9z4",
+     "title": "Letter N for Kids: The Book That Won't Stand",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "alphabet"
+    },
+    {
+     "id": "K2LnXnYujLE",
+     "title": "Letter O for Kids: The Giant Bubble",
+     "published": "2026-11-06",
+     "minutes": 1,
+     "series": "alphabet"
+    },
+    {
+     "id": "Fe_1HZLNuEo",
+     "title": "Letter P for Kids: The Little Snail",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "alphabet"
+    },
+    {
+     "id": "1q_6XXMnqOY",
+     "title": "Letter Q for Kids: The Tiny Ladybug",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "alphabet"
+    },
+    {
+     "id": "8XYMAhcU0j4",
+     "title": "Letter R for Kids: The Apple Tree",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "alphabet"
+    },
+    {
+     "id": "_o9zKpwFW8M",
+     "title": "Letter S for Kids: The Runaway Toy Duck",
+     "published": "2026-11-06",
+     "minutes": 1,
+     "series": "alphabet"
+    },
+    {
+     "id": "yXG1p9R7mTE",
+     "title": "Letter T for Kids: The Tea Party",
+     "published": "2026-11-06",
+     "minutes": 1,
+     "series": "alphabet"
+    },
+    {
+     "id": "OL2HGn9J2dY",
+     "title": "Letter U for Kids: The Garden Swing",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "alphabet"
+    },
+    {
+     "id": "L_QlERHWqfE",
+     "title": "Letter V for Kids: The Melting Ice Cream",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "alphabet"
+    },
+    {
+     "id": "tutgTwNWqRk",
+     "title": "Letter W for Kids: The Paper Crown",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "alphabet"
+    },
+    {
+     "id": "NoqxbZjj2cQ",
+     "title": "Letter X for Kids: Snip, Snip, Scissors",
+     "published": "2026-11-06",
+     "minutes": 1,
+     "series": "alphabet"
+    },
+    {
+     "id": "A1rTefiQbNM",
+     "title": "Letter Y for Kids: A Drink for the Flower",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "alphabet"
+    },
+    {
+     "id": "_Jpga1tseF0",
+     "title": "Letter Z for Kids: Sleepy Venu",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "alphabet"
+    }
+   ]
+  },
+  {
+   "slug": "numbers",
+   "name": "Numbers",
+   "blurb": "Counting stories, one number at a time.",
+   "playlist": "PLW0Mgix_3Maw",
+   "episodes": [
+    {
+     "id": "ktJVuy4mlpM",
+     "title": "Venu's First Snow: Count to 10 in the Snow",
+     "published": "2026-11-21",
+     "minutes": 8,
+     "series": "numbers"
+    }
+   ]
+  },
+  {
+   "slug": "number-games",
+   "name": "Number Games",
+   "blurb": "Playful games with counting and sharing.",
+   "playlist": "PLYUpSqhzGNi0",
+   "episodes": [
+    {
+     "id": "4G6bARC_0qg",
+     "title": "Counting for Kids: Venu's Busy Bakery",
+     "published": "2026-11-06",
+     "minutes": 4,
+     "series": "number-games"
+    },
+    {
+     "id": "OMzAZ1G0qWQ",
+     "title": "One for You, One for Me!",
+     "published": "2026-11-23",
+     "minutes": 5,
+     "series": "number-games"
+    }
+   ]
+  },
+  {
+   "slug": "colours",
+   "name": "Colours",
+   "blurb": "Find a colour all around the garden.",
+   "playlist": "PLQzbKeT5j1y4",
+   "episodes": [
+    {
+     "id": "AQb51lp0BRk",
+     "title": "Color Red for Kids: Paint the Strawberry",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "colours"
+    },
+    {
+     "id": "pMmR3YRgsRA",
+     "title": "Color Yellow for Kids: Make the Sunshine",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "colours"
+    },
+    {
+     "id": "XhhU3AjWwBA",
+     "title": "Color Blue for Kids: The Little Paper Boat",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "colours"
+    },
+    {
+     "id": "7ZX3jh4jLSQ",
+     "title": "Color Green for Kids: The Hopping Frog",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "colours"
+    },
+    {
+     "id": "VMaV2nFVECQ",
+     "title": "Color Orange for Kids: Carrot and Pumpkin",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "colours"
+    },
+    {
+     "id": "CsFyCkGFdIQ",
+     "title": "Color Purple for Kids: The Butterfly",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "colours"
+    }
+   ]
+  },
+  {
+   "slug": "shapes",
+   "name": "Shapes",
+   "blurb": "Circles, squares and stars in everyday things.",
+   "playlist": "PLBDKLM1myA4M",
+   "episodes": [
+    {
+     "id": "S0lwCdRMUtE",
+     "title": "Circle Shape for Kids: The Lost Wagon Wheel",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "shapes"
+    },
+    {
+     "id": "5VEDinEYMa8",
+     "title": "Square Shape for Kids: Teddy's Window",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "shapes"
+    },
+    {
+     "id": "wUSVZX5Ypl4",
+     "title": "Triangle Shape for Kids: The Roof Block",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "shapes"
+    },
+    {
+     "id": "pWTnlcCSrFM",
+     "title": "Rectangle Shape for Kids: Dino's Bed",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "shapes"
+    },
+    {
+     "id": "ko40bUyoKoo",
+     "title": "Oval Shape for Kids: Mummy Hen's Egg",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "shapes"
+    },
+    {
+     "id": "r2Zfv1cbJLY",
+     "title": "Star Shape for Kids: The Twinkling Star",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "shapes"
+    },
+    {
+     "id": "QrxU09p8ntE",
+     "title": "Heart Shape for Kids: A Card for Mummy",
+     "published": "2026-11-06",
+     "minutes": 2,
+     "series": "shapes"
+    },
+    {
+     "id": "d8KfVWNtVIo",
+     "title": "The Shape Box",
+     "published": "2026-11-22",
+     "minutes": 4,
+     "series": "shapes"
+    }
+   ]
+  },
+  {
+   "slug": "animal-friends",
+   "name": "Animal Friends",
+   "blurb": "Meet animals and the sounds they make.",
+   "playlist": "PLW5WGn_4Qv_k",
+   "episodes": [
+    {
+     "id": "ymefRsDyEk8",
+     "title": "Farm Animal Sounds for Kids: Little Duck's Lost Mummy",
+     "published": "2026-11-06",
+     "minutes": 7,
+     "series": "animal-friends"
+    },
+    {
+     "id": "Tt7rCNlvduY",
+     "title": "Garden Animal Sounds for Kids: The Garden Picnic",
+     "published": "2026-11-06",
+     "minutes": 6,
+     "series": "animal-friends"
+    },
+    {
+     "id": "4tEcUF1olMw",
+     "title": "Bug Hunt: Garden Bugs for Kids",
+     "published": "2026-11-24",
+     "minutes": 5,
+     "series": "animal-friends"
+    }
+   ]
+  },
+  {
+   "slug": "abc-words",
+   "name": "ABC Words",
+   "blurb": "Letters and the first words that start with them.",
+   "playlist": "PLA8KrISce-pI",
+   "episodes": []
+  }
+ ],
+ "shorts": [
+  {
+   "id": "4lsDPomilKM",
+   "title": "Bug Hunt: Garden Bugs for Kids!",
+   "published": "2026-11-25",
+   "minutes": 1
+  },
+  {
+   "id": "NsfCez-9icA",
+   "title": "The Shape Box!",
+   "published": "2026-11-23",
+   "minutes": 2
+  },
+  {
+   "id": "wLlwEfQnNmA",
+   "title": "Venu's First Snow: Count to 10 in the Snow!",
+   "published": "2026-11-22",
+   "minutes": 2
+  },
+  {
+   "id": "JXisFDCGUUU",
+   "title": "Hello from Venu & Vena!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "dfAm1CyBg6M",
+   "title": "Meet Orange!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "24mEdLd7C_Q",
+   "title": "Meet Green!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "jfMKHcFUGWM",
+   "title": "Meet Blue!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "L3cm4-axQso",
+   "title": "Meet Yellow!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "Ok5zMSb4ogY",
+   "title": "Meet Red!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "XcGUm9M-vls",
+   "title": "Count to 10: Pip the Little Lost Crab!",
+   "published": "2026-11-11",
+   "minutes": 2
+  },
+  {
+   "id": "Tdfp6w0hHhw",
+   "title": "Meet Z!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "cK2J-UYJUYQ",
+   "title": "Meet Y!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "FfA8f6QDkCw",
+   "title": "Meet X!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "L3gIB23dS0E",
+   "title": "Meet V!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "9DRPEc1VrVY",
+   "title": "Meet U!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "BE0cGFaX5Uw",
+   "title": "Meet T!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "tmZJ4q3TAMU",
+   "title": "Meet S!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "L_iwQvOmvJc",
+   "title": "Meet R!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "8GvFTpWJ6b4",
+   "title": "Meet Q!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "2ngSj1yeyJI",
+   "title": "Meet P!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "JeRt1JbTjII",
+   "title": "Meet O!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "qUzbGkQGtDs",
+   "title": "Meet N!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "DHMSN-38dRE",
+   "title": "Meet M!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "EYgmIAnWRlo",
+   "title": "Meet L!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "NS7lIruQDEs",
+   "title": "Meet K!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "N5MqR8a9PZM",
+   "title": "Meet J!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "lmzGuS6tm0s",
+   "title": "Meet I!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "Fp2jBQjN7N8",
+   "title": "Meet H!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "_j91tML9Pnw",
+   "title": "Meet G!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "ey9suZcRDXg",
+   "title": "Meet F!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "D9SQvepUic8",
+   "title": "Meet E!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "15fWmji2ebo",
+   "title": "Meet D!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "yBnqzWkgfFw",
+   "title": "Meet C!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "3XElVrCyRog",
+   "title": "Meet B!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "7LFFQVuoS3s",
+   "title": "Meet A!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "GZhn7ZU4uM4",
+   "title": "Meet the Diamond!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "q89aICNLRnk",
+   "title": "Meet the Star!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "rtKlBuk_P0s",
+   "title": "Meet the Heart!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "Yctg7kiyg9Y",
+   "title": "Meet the Oval!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "axAw3E2oz1o",
+   "title": "Meet the Rectangle!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "eYT0YCK00rQ",
+   "title": "Meet the Triangle!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "LcNyySscZ3M",
+   "title": "Meet the Square!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "K8sKUdbKhg0",
+   "title": "Meet the Circle!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "Jd8aPCuDt-4",
+   "title": "Meet White!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "4OoFDWl0lw4",
+   "title": "Meet Black!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "gAGFtQ5r1RM",
+   "title": "Meet Brown!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "3aMpT1GeNKY",
+   "title": "Meet Purple!",
+   "published": "2026-11-11",
+   "minutes": 1
+  },
+  {
+   "id": "L_VQKQda8_I",
+   "title": "Meet Pink!",
+   "published": "2026-11-11",
+   "minutes": 1
+  }
+ ],
+ "full_show": {
+  "id": "RID8o2WA3Oc",
+  "title": "Learn the Alphabet A to Z for Kids",
+  "published": "2026-11-06",
+  "minutes": 42
+ },
+ "trailer": {
+  "id": "-UU52_mFO5Y",
+  "title": "Hello from Venu & Vena!",
+  "published": "2026-11-06",
+  "minutes": 1
+ }
+}
