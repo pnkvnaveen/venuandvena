@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // The Venu & Vena website. Cloudflare Workers Builds runs `npx wrangler deploy` on every
+  // merge into main; wrangler runs the build below first, so no build command is set in the
+  // dashboard. Nothing is ever deployed from a cloud session.
+  "name": "venuandvena",
+  "main": "src/worker.js",
+  "compatibility_date": "2025-11-01",
+  "build": { "command": "node scripts/build.mjs" },
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    // Only these go through the Worker; every other file is served straight from the assets.
+    "run_worker_first": ["/", "/thumb/*", "/api/*"]
+  },
+  "observability": { "enabled": false }
+}

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{title}}</title>
+<meta name="description" content="{{description}}">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#C4E2E8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1b2f3a" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://venuandvena.com{{path}}">
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<link rel="preload" href="/fonts/baloo2.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/andika.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/css/site.css?v={{css-version}}">
+<script src="/js/site.js?v={{js-version}}" defer></script>
+</head>
+<body class="{{body-class}}">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap header-row">
+    <a class="logo" href="/"><img src="/img/wordmark.webp" alt="Venu &amp; Vena home" width="820" height="241"></a>
+    <nav class="menu" aria-label="Main">
+      <a href="/videos"{{nav:videos}}>Videos</a>
+      <a href="/apps"{{nav:apps}}>Apps</a>
+      <a href="/about"{{nav:about}}>About</a>
+      <a href="/feedback"{{nav:feedback}}>Feedback</a>
+    </nav>
+  </div>
+</header>
+<main id="main">
+{{content}}
+</main>
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div>
+      <p class="footer-brand"><span class="venu">Venu</span> &amp; <span class="vena">Vena</span></p>
+      <p>Little adventures. Big discoveries.</p>
+      <p class="small">Calm learning videos and ad-free apps for children aged 3 to 5.</p>
+    </div>
+    <ul class="footer-links" role="list">
+      <li><a href="https://www.youtube.com/@venuandvena">YouTube</a></li>
+      <li><a href="https://www.instagram.com/venuandvena/">Instagram</a></li>
+      <li><a href="mailto:venuandvena@gmail.com">Email us</a></li>
+      <li><a href="/feedback">Send feedback</a></li>
+      <li><a href="/privacy">Privacy</a></li>
+    </ul>
+  </div>
+  <p class="wrap small footer-note">No ads, no cookies and no tracking on this site. © {{year}} Venu &amp; Vena</p>
+</footer>
+</body>
+</html>
