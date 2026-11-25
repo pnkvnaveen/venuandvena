@@ -4,6 +4,8 @@
 //   site/pages/**.html      one file per page; a comment at the top sets its title and menu
 //   site/data/videos.json   the channel's public videos (tools/sync_videos.py)
 //   site/css, js, img, fonts, _headers, robots.txt   copied as they are
+//   dist/sitemap.xml        every layout page, except ones whose header says "index: no"
+//                           (those also get a robots noindex tag)
 //
 // A page file at pages/about.html is served at /about, pages/echopals/privacy.html at
 // /echopals/privacy. A page whose header says "layout: none" is copied unchanged.
@@ -17,6 +19,7 @@ import { CHANNEL_URL, count, episodeCard, esc, minutes, player, playlistUrl, sho
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SITE = join(ROOT, 'site');
 const OUT = join(ROOT, 'dist');
+const ORIGIN = 'https://venuandvena.com';
 const videos = JSON.parse(readFileSync(join(SITE, 'data', 'videos.json'), 'utf8'));
 
 // ---------------------------------------------------------------- series look
@@ -176,6 +179,7 @@ export function build() {
   const layout = readFileSync(join(SITE, 'layout.html'), 'utf8');
   const version = { css: hash('css/site.css'), js: hash('js/site.js') };
   const pages = walk(join(SITE, 'pages')).filter((p) => p.endsWith('.html'));
+  const listed = [];
   for (const file of pages) {
     const rel = relative(join(SITE, 'pages'), file);
     const { meta: m, body } = meta(readFileSync(file, 'utf8'));
@@ -189,6 +193,7 @@ export function build() {
         description: esc(m.description || ''),
         path: path === '/' ? '/' : path.replace(/\/$/, ''),
         'body-class': esc(m.class || ''),
+        robots: m.index === 'no' ? '\n<meta name="robots" content="noindex">' : '',
         'css-version': version.css,
         'js-version': version.js,
         year: String(new Date().getFullYear()),
@@ -196,6 +201,7 @@ export function build() {
       for (const item of ['videos', 'apps', 'about', 'feedback']) {
         vars[`nav:${item}`] = m.nav === item ? ' aria-current="page"' : '';
       }
+      if (m.index !== 'no') listed.push(vars.path);
       vars.content = fill(body, vars);
       html = fill(layout, vars);
     }
@@ -203,7 +209,16 @@ export function build() {
     mkdirSync(dirname(dest), { recursive: true });
     writeFileSync(dest, html);
   }
-  console.log(`built ${pages.length} pages into dist/`);
+  listed.sort((a, b) => (a === '/' ? -1 : b === '/' ? 1 : a.localeCompare(b)));
+  writeFileSync(
+    join(OUT, 'sitemap.xml'),
+    `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${listed.map((p) => `  <url><loc>${ORIGIN}${p}</loc></url>`).join('\n')}
+</urlset>
+`,
+  );
+  console.log(`built ${pages.length} pages into dist/, ${listed.length} in the sitemap`);
 }
 
 build();
