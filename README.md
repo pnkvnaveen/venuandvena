@@ -4,7 +4,8 @@ The Venu & Vena website: the home of the kids' brand, for parents of 3 to 5 year
 YouTube episodes and Shorts, our apps (Echo Pals first) and a feedback form, in the channel's Paper
 Garden look.
 
-It is a Cloudflare Worker with static assets on the personal Cloudflare account, deployed by
+It is a Cloudflare Worker with static assets on the "Venu and Vena" Cloudflare account (which also
+holds the venuandvena.com domain), served at venuandvena.com and www, deployed by
 Cloudflare Workers Builds on every merge into `main` (deploy command `npx wrangler deploy`; wrangler
 runs the build itself). Nothing is deployed from a laptop or a cloud session.
 

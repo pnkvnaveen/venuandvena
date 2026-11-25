@@ -6,6 +6,12 @@
   "name": "venuandvena",
   "main": "src/worker.js",
   "compatibility_date": "2025-11-01",
+  // The site's addresses, on the "Venu and Vena" Cloudflare account. www is sent on to the
+  // bare address by the Worker itself.
+  "routes": [
+    { "pattern": "venuandvena.com", "custom_domain": true },
+    { "pattern": "www.venuandvena.com", "custom_domain": true }
+  ],
   "build": { "command": "node scripts/build.mjs" },
   "assets": {
     "directory": "./dist",
