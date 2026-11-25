@@ -6,7 +6,7 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import assert from 'node:assert/strict';
-import { newestFromFeed } from '../src/worker.js';
+import { additions, newestFromFeed, parseFeed } from '../src/worker.js';
 
 const DIST = new URL('../dist/', import.meta.url).pathname;
 const walk = (d) => readdirSync(d).flatMap((f) => (statSync(join(d, f)).isDirectory() ? walk(join(d, f)) : [join(d, f)]));
@@ -43,6 +43,12 @@ assert.deepEqual(newestFromFeed(feed), {
   id: '4tEcUF1olMw', title: 'Bug Hunt: Garden Bugs for Kids', series: 'Animal Friends', published: '2026-11-24',
 });
 assert.equal(newestFromFeed('<feed></feed>'), null);
+const catalogue = { series: [{ slug: 'animal-friends', name: 'Animal Friends', episodes: [] }], shorts: [] };
+const added = additions(parseFeed(feed), catalogue);
+assert.deepEqual(added.series['animal-friends'].map((e) => e.id), ['4tEcUF1olMw']);
+assert.deepEqual(added.shorts.map((e) => e.id), ['AAAAAAAAAAA']);
+catalogue.series[0].episodes.push({ id: '4tEcUF1olMw' });
+assert.equal(additions(parseFeed(feed), catalogue).series['animal-friends'], undefined);
 
 if (problems) process.exit(1);
 console.log('check passed');
