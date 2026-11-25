@@ -16,3 +16,20 @@ document.addEventListener('click', (event) => {
   link.replaceWith(frame);
   frame.focus();
 });
+
+// Feedback: an empty form is not sent; a short note asks for one answer instead.
+const feedbackForm = document.querySelector('form.feedback');
+if (feedbackForm) {
+  feedbackForm.addEventListener('submit', (event) => {
+    const data = new FormData(feedbackForm);
+    const answered = [...data.entries()].some(([k, v]) => k !== 'email' && k !== 'website' && String(v).trim());
+    const note = document.getElementById('empty-note');
+    if (!answered) {
+      event.preventDefault();
+      note.hidden = false;
+      note.focus();
+    } else {
+      note.hidden = true;
+    }
+  });
+}

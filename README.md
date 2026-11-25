@@ -28,6 +28,7 @@ runs the build itself). Nothing is deployed from a laptop or a cloud session.
 | `scripts/build.mjs` | Builds `dist/` from `site/`. No dependencies. |
 | `scripts/check.mjs` | The checks above, plus a test of the newest-video logic. |
 | `src/worker.js` | Adds episodes and Shorts that went public after the last build to Home and Videos, read from the channel's public feed (the last 15 uploads, so run `tools/sync_videos.py` at least weekly); serves thumbnails; redirects www; sets security headers. Test it locally by putting `FEED_URL="http://127.0.0.1:8788/feed.xml"` in `.dev.vars`. |
+| `site/pages/feedback.html` | The parent feedback form. `src/worker.js` saves answers (and the date, nothing else) in the D1 database `venuandvena-feedback`, which wrangler creates on the first deploy, and a daily cron deletes answers older than 12 months. Locally, `npm run dev` uses a local copy of the database. |
 | `src/cards.js` | The video card HTML, shared by the build and the Worker. |
 | `tools/make_art.py` | Makes the pictures from the channel's own art (run from a `venu-vena-studio` checkout). |
 | `tools/sync_videos.py` | Refreshes `videos.json` from the YouTube API (read-only). |
