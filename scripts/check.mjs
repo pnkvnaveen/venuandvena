@@ -37,6 +37,20 @@ for (const file of walk(DIST)) {
   }
 }
 
+// The sitemap lists every page Google should index, and no page that says noindex.
+const sitemap = readFileSync(join(DIST, 'sitemap.xml'), 'utf8');
+const inSitemap = [...sitemap.matchAll(/<loc>https:\/\/venuandvena\.com([^<]*)<\/loc>/g)].map((m) => m[1]);
+for (const must of ['/', '/videos', '/apps', '/about', '/feedback', '/echopals', '/echopals/privacy', '/echopals/support']) {
+  if (!inSitemap.includes(must)) fail(`sitemap.xml: missing ${must}`);
+}
+for (const path of inSitemap) {
+  const file = join(DIST, path === '/' ? 'index.html' : `${path.slice(1)}.html`);
+  let html = '';
+  try { html = readFileSync(file, 'utf8'); } catch { fail(`sitemap.xml: ${path} has no page`); continue; }
+  if (/name="robots" content="noindex"/.test(html)) fail(`sitemap.xml: ${path} is noindex`);
+}
+if (!/^Sitemap: https:\/\/venuandvena\.com\/sitemap\.xml$/m.test(readFileSync(join(DIST, 'robots.txt'), 'utf8'))) fail('robots.txt: no Sitemap line');
+
 const feed = `<feed><entry><yt:videoId>AAAAAAAAAAA</yt:videoId><title>Hop! | Venu &amp; Vena #Shorts</title><published>2026-11-25T06:30:00+00:00</published></entry>
 <entry><yt:videoId>4tEcUF1olMw</yt:videoId><title>Bug Hunt: Garden Bugs for Kids | Animal Friends with Venu &amp; Vena | Episode 6</title><published>2026-11-24T11:30:00+00:00</published></entry></feed>`;
 assert.deepEqual(newestFromFeed(feed), {
